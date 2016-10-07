@@ -17,7 +17,7 @@ import java.io.*;
  *
  * @see Request
  */
-public class DemoClientRequest3 extends Request {
+public class DemoClientRequest3 extends Request<XMLStreamReader> {
 
     private final Logger log = LoggerFactory.getLogger(DemoClientRequest3.class);
 
@@ -98,7 +98,7 @@ public class DemoClientRequest3 extends Request {
      *
      * @return request string
      */
-    public String getXMLRequest() {
+    public String getXMLResponse() {
         return "<?xml version=\"1.0\" ?> <MESSAGE CONTENT>";
     }
 

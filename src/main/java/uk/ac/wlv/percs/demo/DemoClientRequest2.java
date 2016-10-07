@@ -13,7 +13,7 @@ import javax.xml.stream.XMLStreamReader;
  *
  * @see Request
  */
-public class DemoClientRequest2 extends Request {
+public class DemoClientRequest2 extends Request<XMLStreamReader> {
 
     private final Logger log = LoggerFactory.getLogger(DemoClientRequest2.class);
 
@@ -80,7 +80,7 @@ public class DemoClientRequest2 extends Request {
      *
      * @return request string
      */
-    public final String getXMLRequest() {
+    public final String getXMLResponse() {
         return "<response id=\"" + id + "\">" + "<tk>" + tk + "</tk></response>";
     }
 

@@ -12,7 +12,7 @@ import javax.xml.stream.XMLStreamReader;
  *
  * @see Request
  */
-public class DemoInvalidRequest extends Request {
+public class DemoInvalidRequest extends Request<XMLStreamReader> {
 
     private final Logger log = LoggerFactory.getLogger(DemoInvalidRequest.class);
 
@@ -30,12 +30,13 @@ public class DemoInvalidRequest extends Request {
         return true;
     }
 
+
     /**
      * This method returns a string representing received request
      *
      * @return request string
      */
-    public String getXMLRequest() {
+    public String getXMLResponse() {
         return "<<poor-request/>/>"; // TODO: It does not represent received request
     }
 

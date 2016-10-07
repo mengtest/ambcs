@@ -13,7 +13,7 @@ import javax.xml.stream.XMLStreamReader;
  *
  * @see Request
  */
-public class DemoClientRequest1 extends Request {
+public class DemoClientRequest1 extends Request<XMLStreamReader> {
 
     private final Logger log = LoggerFactory.getLogger(DemoClientRequest1.class);
 
@@ -43,7 +43,7 @@ public class DemoClientRequest1 extends Request {
      *
      * @return request string
      */
-    public final String getXMLRequest() {
+    public final String getXMLResponse() {
         return "<xin-cha-o/>";
     }
 
