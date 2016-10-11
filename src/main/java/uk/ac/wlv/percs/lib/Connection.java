@@ -22,6 +22,12 @@ import java.net.Socket;
 class Connection extends UntypedActor {
 
     private final static Logger log = LoggerFactory.getLogger(Connection.class);
+
+    final Validator validator;
+
+    // ActorRef listener;
+    final int port;
+
     /**
      * SupervisorStrategy setup
      */
@@ -29,13 +35,13 @@ class Connection extends UntypedActor {
             = new OneForOneStrategy(10, Duration.create("1 minute"),
             new Function<Throwable, SupervisorStrategy.Directive>() {
                 public SupervisorStrategy.Directive apply(Throwable t) {
-                    if (t instanceof ReadingProblem) {
+                    if (t instanceof StreamReadingProblem) {
                         log.error(t.getMessage(), t);
                         return SupervisorStrategy.resume();
                     } else if (t instanceof IOException) {
                         log.error(t.getMessage(), t);
                         return SupervisorStrategy.restart();
-                    } else if (t instanceof ClosingProblem) {
+                    } else if (t instanceof StreamClosingProblem) {
                         log.error(t.getMessage(), t);
                         return SupervisorStrategy.stop();
                     } else {
@@ -44,10 +50,6 @@ class Connection extends UntypedActor {
                     }
                 }
             });
-    final Validator validator;
-
-    // ActorRef listener;
-    final int port;
 
     /**
      * Connection's constructor

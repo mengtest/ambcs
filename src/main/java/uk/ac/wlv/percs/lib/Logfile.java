@@ -12,11 +12,11 @@ import java.io.PrintWriter;
 import java.util.Date;
 
 /**
- * This class implements custom communication logger
+ * This class implements custom logger
  */
-class CommunicationLog {
+class Logfile {
 
-    private final Logger log = LoggerFactory.getLogger(CommunicationLog.class);
+    private final Logger log = LoggerFactory.getLogger(Logfile.class);
 
     private FileWriter fw = null;
     private BufferedWriter bw = null;
@@ -24,12 +24,12 @@ class CommunicationLog {
     private Date date = null;
 
     /**
-     * Default constructor for CommunicationLog
+     * Default constructor for Logfile
      *
      * @throws IOException cf. {@link IOException}
      */
-    CommunicationLog() throws IOException {
-        fw = new FileWriter("PERCS1427790.log", true);
+    Logfile(String filename) throws IOException {
+        fw = new FileWriter(filename, true);
         bw = new BufferedWriter(fw);
         pw = new PrintWriter(bw);
     }
@@ -70,4 +70,4 @@ class CommunicationLog {
         }
     }
 
-} //  end of CommunicationLog
+} //  end of Logfile

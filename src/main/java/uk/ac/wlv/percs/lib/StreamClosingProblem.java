@@ -3,8 +3,8 @@ package uk.ac.wlv.percs.lib;
 /**
  * Internal exception
  */
-class ClosingProblem extends Exception {
+class StreamClosingProblem extends Exception {
 
     private static final long serialVersionUID = 1L;
 
-} // end of ClosingProblem:Exception
+} // end of StreamClosingProblem:Exception

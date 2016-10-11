@@ -19,7 +19,9 @@ class Listener extends UntypedActor {
 
     private final Logger log = LoggerFactory.getLogger(Listener.class);
 
+    // The socket listening for new clients
     private final ServerSocket serverSocket;
+    // The port number to listen on
     private final int port;
 
     /**

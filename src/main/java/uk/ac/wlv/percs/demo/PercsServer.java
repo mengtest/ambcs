@@ -32,7 +32,7 @@ public class PercsServer {
         int port = 11896;
 
         /* Create server instance on port, with name, and protocol instance */
-        final Server server = Server.create(port, "PercsServer", protocol);
+        final Server server = Server.create(port, "PercsServer", "Percs.log", protocol);
 
     } // end of main()
 

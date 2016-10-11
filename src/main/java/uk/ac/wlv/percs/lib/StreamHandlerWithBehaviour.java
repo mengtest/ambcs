@@ -45,13 +45,12 @@ class StreamHandlerWithBehaviour extends UntypedActor {
     private int character;
     private boolean listening = true;
 
-    ;
     /**
      * Given corresponding request, actor will start reading from stream.
      * Input from stream is processed on character by character basis.
      */
     private final Procedure<Object> reading = new Procedure<Object>() {
-        public void apply(Object message) throws ReadingProblem, ClosingProblem {
+        public void apply(Object message) throws StreamReadingProblem, StreamClosingProblem {
             if (message instanceof CommunicationEndpoint) {
                 try {
                     final CommunicationEndpoint endpoint = (CommunicationEndpoint) message;
@@ -75,7 +74,7 @@ class StreamHandlerWithBehaviour extends UntypedActor {
                         character = reader.read();
                     }
                 } catch (IOException e) {
-                    throw new ReadingProblem();
+                    throw new StreamReadingProblem();
                 } finally {
                     close();
                 }
@@ -121,14 +120,14 @@ class StreamHandlerWithBehaviour extends UntypedActor {
     /**
      * close(): helper clean up method
      *
-     * @throws ClosingProblem cf. {@link ClosingProblem}
+     * @throws StreamClosingProblem cf. {@link StreamClosingProblem}
      */
-    private void close() throws ClosingProblem {
+    private void close() throws StreamClosingProblem {
         try {
             if (reader != null) reader.close();
         } catch (IOException e) {
             log.error(e.getMessage(), e);
-            throw new ClosingProblem();
+            throw new StreamClosingProblem();
         }
 
     }
@@ -155,14 +154,10 @@ class StreamHandlerWithBehaviour extends UntypedActor {
         }
     }
 
-    ;
-
     /**
      * Placeholder request
      */
     static class ConnectionClosed {
     }
-
-    ;
 
 } // end of StreamHandlerWithBehaviour{}

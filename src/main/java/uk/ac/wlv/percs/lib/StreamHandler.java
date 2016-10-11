@@ -48,8 +48,6 @@ class StreamHandler extends UntypedActor {
         this.validator = validator;
     }
 
-    ;
-
     /**
      * This method returns boolean value indicating whether buffered character
      * stream is empty
@@ -68,9 +66,9 @@ class StreamHandler extends UntypedActor {
     /**
      * close(): helper clean up method
      *
-     * @throws ClosingProblem cf. {@link ClosingProblem}
+     * @throws StreamClosingProblem cf. {@link StreamClosingProblem}
      */
-    private void close() throws ClosingProblem {
+    private void close() throws StreamClosingProblem {
         try {
             if (reader != null) {
                 reader.close();
@@ -78,7 +76,7 @@ class StreamHandler extends UntypedActor {
             }
         } catch (IOException e) {
             log.error(e.getMessage(), e);
-            throw new ClosingProblem();
+            throw new StreamClosingProblem();
         }
 
     }
@@ -90,11 +88,11 @@ class StreamHandler extends UntypedActor {
      * character basis in order to recognise control characters.
      *
      * @param message sent to actor
-     * @throws ReadingProblem cf. {@link ReadingProblem}
-     * @throws ClosingProblem cf. {@link ClosingProblem}
+     * @throws StreamReadingProblem cf. {@link StreamReadingProblem}
+     * @throws StreamClosingProblem cf. {@link StreamClosingProblem}
      */
     @Override
-    public void onReceive(Object message) throws ReadingProblem, ClosingProblem {
+    public void onReceive(Object message) throws StreamReadingProblem, StreamClosingProblem {
         if (message instanceof CommunicationEndpoint) {
             try {
                 final CommunicationEndpoint endpoint = (CommunicationEndpoint) message;
@@ -129,7 +127,7 @@ class StreamHandler extends UntypedActor {
                 }
                 // log.info("Out loop...:while StreamHandler");
             } catch (IOException e) {
-                throw new ReadingProblem();
+                throw new StreamReadingProblem();
             } finally {
                 // log.info("In finally StreamHandler");
                 log.info("Closing buffers...");

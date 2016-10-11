@@ -24,7 +24,9 @@ class Validator {
 
     private final Logger log = LoggerFactory.getLogger(Validator.class);
 
+    // Custom protocol
     private Protocol protocol;
+    // Custom port number
     private int port;
     // StAX
     private XMLInputFactory xif;
@@ -35,11 +37,19 @@ class Validator {
     private int state;
     private ArrayList<Request> requests = new ArrayList<Request>();
     // Storing record of transactions
-    private CommunicationLog communicationLog;
+    private Logfile logfile;
+    private String nameOfLogfile;
 
-    public Validator(Protocol service, int port) {
+//    public Validator(Protocol service, int port, Logfile logfile) {
+//        this.protocol = service;
+//        this.port = port;
+//        this.logfile = logfile;
+//    }
+
+    public Validator(Protocol service, int port, String nameOfLogfile) {
         this.protocol = service;
         this.port = port;
+        this.nameOfLogfile = nameOfLogfile;
     }
 
     /**
@@ -66,7 +76,7 @@ class Validator {
     public ArrayList<String> validate(String msg) {
         ArrayList<String> responses = null;
         try {
-            communicationLog = new CommunicationLog();
+            logfile = new Logfile(nameOfLogfile);
             // String for output stream
             String response = null;
             responses = new ArrayList();
@@ -87,7 +97,9 @@ class Validator {
                             state = (state + 1) % (keys.size() - 1); // -1 iff last key is invalid request
                             response = respond(message);
                             responses.add(response);
-                            communicationLog.process(new Date(), port, message.getXMLResponse(), response);
+                            if (logfile != null) {
+                                logfile.process(new Date(), port, message.getXMLResponse(), response);
+                            }
                             if (state == keys.size() - 2) {
                                 // log.info("The last response IS: {}", response);
                                 responses.add("done");
@@ -105,7 +117,7 @@ class Validator {
             log.error(e.getMessage(), e);
         } finally {
             requests.clear();
-            communicationLog.close();
+            logfile.close();
             return responses;
         }
     } // end of validate
@@ -132,7 +144,7 @@ class Validator {
         // Prepare request: strip request of XML prologs
         request = msg.replace("<?xml version=\"1.0\" ?>", "");
 
-        // Quick hack solving invalid XML constructs used by supplied client.
+        // Quick hack solving invalid XML constructs used by supplied demo client.
         // TODO: Most likely to be removed in future versions.
         request = request.replace("\\", "");
         request = request.replace("<<Poor request/>/>", "<poor-request/>");
@@ -178,6 +190,5 @@ class Validator {
         xsr.close();
 
     } // end of parseInput()
-
 
 } // end of Validator{}
