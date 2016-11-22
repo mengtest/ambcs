@@ -43,7 +43,7 @@ public class DemoClientRequest1 extends Request<XMLStreamReader> {
      *
      * @return request string
      */
-    public final String getXMLResponse() {
+    public final String getXML() {
         return "<xin-cha-o/>";
     }
 

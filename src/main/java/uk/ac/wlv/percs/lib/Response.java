@@ -12,6 +12,6 @@ public interface Response {
      * @param message a class implementing {@link Request}
      * @return corresponding XML request the in form of a string literal
      */
-    String getXMLResponse(Request message);
+    String getXML(Request message);
 
 } // end of Response{}

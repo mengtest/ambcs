@@ -14,7 +14,7 @@ public abstract class Request<ReaderType> {
      * This method signalises whether processed XML data/request
      * corresponds to a class implementing this interface.
      *
-     * @param reader a stream containing XML data
+     * @param reader a reader parsing XML data
      * @return true if request corresponds to an interface implementation
      * @throws Exception {eg. @link XMLStreamException}
      */
@@ -25,6 +25,6 @@ public abstract class Request<ReaderType> {
      *
      * @return request string
      */
-    public abstract String getXMLResponse();
+    public abstract String getXML();
 
 } // end of Request{}

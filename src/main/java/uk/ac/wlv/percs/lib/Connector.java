@@ -19,9 +19,9 @@ import java.net.Socket;
  * This actor is at the root of this system. It provides interfacing between
  * different children and handles exceptions.
  */
-class Connection extends UntypedActor {
+class Connector extends UntypedActor {
 
-    private final static Logger log = LoggerFactory.getLogger(Connection.class);
+    private final static Logger log = LoggerFactory.getLogger(Connector.class);
 
     final Validator validator;
 
@@ -35,13 +35,13 @@ class Connection extends UntypedActor {
             = new OneForOneStrategy(10, Duration.create("1 minute"),
             new Function<Throwable, SupervisorStrategy.Directive>() {
                 public SupervisorStrategy.Directive apply(Throwable t) {
-                    if (t instanceof StreamReadingProblem) {
+                    if (t instanceof IOReadingProblem) {
                         log.error(t.getMessage(), t);
                         return SupervisorStrategy.resume();
                     } else if (t instanceof IOException) {
                         log.error(t.getMessage(), t);
                         return SupervisorStrategy.restart();
-                    } else if (t instanceof StreamClosingProblem) {
+                    } else if (t instanceof IOClosingProblem) {
                         log.error(t.getMessage(), t);
                         return SupervisorStrategy.stop();
                     } else {
@@ -52,29 +52,29 @@ class Connection extends UntypedActor {
             });
 
     /**
-     * Connection's constructor
+     * Connector's constructor
      *
      * @param validator instance validating stream according to protocol
      * @param port a port number
      */
-    public Connection(Validator validator, int port) {
+    public Connector(Validator validator, int port) {
         this.validator = validator;
         this.port = port;
     }
 
     /**
-     * Props for Connection
+     * Props for Connector
      *
      * @param validator instance validating stream according to protocol
      * @param port a port number
-     * @return the Connection actor
+     * @return the Connector actor
      */
     public static Props props(final Validator validator, final int port) {
-        return Props.create(new Creator<Connection>() {
+        return Props.create(new Creator<Connector>() {
             private static final long serialVersionUID = 1L;
 
-            public Connection create() throws Exception {
-                return new Connection(validator, port);
+            public Connector create() throws Exception {
+                return new Connector(validator, port);
             }
         });
     }
@@ -94,7 +94,7 @@ class Connection extends UntypedActor {
      */
     @Override
     public void preStart() {
-        // Listener is a child of the Connection actor
+        // Listener is a child of the Connector actor
         final ActorRef listener = getContext().actorOf(Props.create(Listener.class, port), "listener");
         listener.tell("listen", getSelf());
         log.info("Listening...");
@@ -136,11 +136,11 @@ class Connection extends UntypedActor {
         if (message instanceof CommunicationEndpoint) {
             final CommunicationEndpoint endpoint = (CommunicationEndpoint) message;
             final ActorRef handler =
-                    getContext().actorOf(Props.create(StreamHandler.class, validator));
+                    getContext().actorOf(Props.create(IOHandler.class, validator));
             handler.tell(endpoint, getSelf());
         } else if (message.equals("done")) {
             log.info("Received \"done\": Stopping stream handler...");
-            context().stop(getSender()); /* stop StreamHandler */
+            context().stop(getSender()); /* stop IOHandler */
             log.info("Listening...");
             //
             // listener.tell("listen", getSelf());
@@ -149,4 +149,4 @@ class Connection extends UntypedActor {
         }
     } // end of onReceive()
 
-} // end of Connection{}
+} // end of Connector{}

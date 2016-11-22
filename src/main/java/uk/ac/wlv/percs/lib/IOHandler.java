@@ -27,9 +27,9 @@ import java.util.ArrayList;
  * input such as {@code <<request/>>} or {@code <mess age/>}. See {@link
  * XMLStreamReader} for more information on different kind of it's exceptions.
  */
-class StreamHandler extends UntypedActor {
+class IOHandler extends UntypedActor {
 
-    private final Logger log = LoggerFactory.getLogger(StreamHandler.class);
+    private final Logger log = LoggerFactory.getLogger(IOHandler.class);
 
     private final Validator validator;
 
@@ -40,11 +40,11 @@ class StreamHandler extends UntypedActor {
     private boolean listening = true;
 
     /**
-     * StreamHandler's constructor
+     * IOHandler's constructor
      *
      * @param validator instance validating stream according to protocol
      */
-    StreamHandler(Validator validator) {
+    IOHandler(Validator validator) {
         this.validator = validator;
     }
 
@@ -66,9 +66,9 @@ class StreamHandler extends UntypedActor {
     /**
      * close(): helper clean up method
      *
-     * @throws StreamClosingProblem cf. {@link StreamClosingProblem}
+     * @throws IOClosingProblem cf. {@link IOClosingProblem}
      */
-    private void close() throws StreamClosingProblem {
+    private void close() throws IOClosingProblem {
         try {
             if (reader != null) {
                 reader.close();
@@ -76,7 +76,7 @@ class StreamHandler extends UntypedActor {
             }
         } catch (IOException e) {
             log.error(e.getMessage(), e);
-            throw new StreamClosingProblem();
+            throw new IOClosingProblem();
         }
 
     }
@@ -88,11 +88,11 @@ class StreamHandler extends UntypedActor {
      * character basis in order to recognise control characters.
      *
      * @param message sent to actor
-     * @throws StreamReadingProblem cf. {@link StreamReadingProblem}
-     * @throws StreamClosingProblem cf. {@link StreamClosingProblem}
+     * @throws IOReadingProblem cf. {@link IOReadingProblem}
+     * @throws IOClosingProblem cf. {@link IOClosingProblem}
      */
     @Override
-    public void onReceive(Object message) throws StreamReadingProblem, StreamClosingProblem {
+    public void onReceive(Object message) throws IOReadingProblem, IOClosingProblem {
         if (message instanceof CommunicationEndpoint) {
             try {
                 final CommunicationEndpoint endpoint = (CommunicationEndpoint) message;
@@ -104,13 +104,13 @@ class StreamHandler extends UntypedActor {
                 line = new StringBuffer();
                 character = reader.read();
                 while (listening) {
-                    // log.info("In loop...:while StreamHandler");
+                    // log.info("In loop...:while IOHandler");
                     // log.info("Receiving characters...");
                     if (hasCompleteMessage()) {
                         log.info("Received request from {}", address);
                         ArrayList<String> ans = validator.validate(line.toString());
                         for (String a : ans) {
-                            // log.info("In loop...:for StreamHandler");
+                            // log.info("In loop...:for IOHandler");
                             if (a.equals("done")) {
                                 // log.info("DONE!");
                                 listening = false;
@@ -125,11 +125,11 @@ class StreamHandler extends UntypedActor {
                     line.append((char) character);
                     character = reader.read();
                 }
-                // log.info("Out loop...:while StreamHandler");
+                // log.info("Out loop...:while IOHandler");
             } catch (IOException e) {
-                throw new StreamReadingProblem();
+                throw new IOReadingProblem();
             } finally {
-                // log.info("In finally StreamHandler");
+                // log.info("In finally IOHandler");
                 log.info("Closing buffers...");
                 close();
                 // line = null;
@@ -140,4 +140,4 @@ class StreamHandler extends UntypedActor {
         }
     } // end of onReceive()
 
-} // end of StreamHandler{}
+} // end of IOHandler{}

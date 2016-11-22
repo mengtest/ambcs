@@ -9,7 +9,10 @@ Actor model based implementation of server supporting non-uniform protocols.
 
 * Dependencies
 
-This project uses [[https://github.com/akka/akka][Lightbend Akka]] library for handling concurrency as well as hierarchical error propagation and maintenance. Additionally, It does benefit from the usage of the [[https://github.com/apache/log4j][Apache Log4j]] for managing asynchronous logging during non-deterministic execution of the program. 
+# This project uses:
+
+- [[https://github.com/akka/akka][Lightbend Akka]] :: library for handling concurrency as well as hierarchical error propagation and maintenance. 
+- [[https://github.com/apache/log4j][Apache Log4j]] :: manage asynchronous logging during non-deterministic execution of the program.
 
 * Example
 
@@ -40,7 +43,7 @@ Use the custom request/response pairs.
     }
 #+end_src
 
-Add an entry point.
+Add an entry point for the application.
 #+begin_src java
     public static void main(String[] args) {
 
@@ -48,7 +51,13 @@ Add an entry point.
         int port = 11896;
 
         /* Create server instance on port, with name, and protocol instance */
-        final Server server = Server.create(port, "PercsServer", protocol);
+        final Server server = Server.create (
+                port,
+                "PercsServer",
+                "Percs.log",
+                protocol,
+                ConverterType.Stream
+        );
 
     } // end of main()
 #+end_src
@@ -76,52 +85,53 @@ mvn javadoc:javadoc &
 
 or visit [[https://cezs.github.io/studies-percs/][the project's page]].
 
-* Directories
+# * Directories
 
-** Source
+# ** Source
 
-#+begin_example
-└── src
-    ├── it
-    │   └── clientServer
-    │       ├── a.class
-    │       ├── b.class
-    │       └── PercsClient.class
-    ├── main
-    │   ├── java
-    │   │   └── uk
-    │   │       └── ac
-    │   │           └── wlv
-    │   │               └── percs
-    │   │                   ├── demo
-    │   │                   │   ├── DemoClientRequest1.java
-    │   │                   │   ├── DemoClientRequest2.java
-    │   │                   │   ├── DemoClientRequest3.java
-    │   │                   │   ├── DemoClientRequest4.java
-    │   │                   │   ├── DemoEmptyResponse.java
-    │   │                   │   ├── DemoInvalidRequest.java
-    │   │                   │   ├── DemoPoorRequest.java
-    │   │                   │   ├── DemoServerResponse1.java
-    │   │                   │   ├── DemoServerResponse2.java
-    │   │                   │   ├── DemoServerResponse3.java
-    │   │                   │   ├── package-info.java
-    │   │                   │   └── PercsServer.java
-    │   │                   └── lib
-    │   │                       ├── package-info.java
-    │   │                       ├── Percs.java
-    │   │                       ├── Protocol.java
-    │   │                       ├── Request.java
-    │   │                       ├── Response.java
-    │   │                       └── Server.java
-    │   └── resources
-    │       ├── application.conf
-    │       └── log4j.xml
-    └── test
-        ├── java
-        └── resources
-#+end_example
+# #+begin_example
+# └── src
+#     ├── it
+#     │   └── clientServer
+#     │       ├── a.class
+#     │       ├── b.class
+#     │       └── PercsClient.class
+#     ├── main
+#     │   ├── java
+#     │   │   └── uk
+#     │   │       └── ac
+#     │   │           └── wlv
+#     │   │               └── percs
+#     │   │                   ├── demo
+#     │   │                   │   ├── DemoClientRequest1.java
+#     │   │                   │   ├── DemoClientRequest2.java
+#     │   │                   │   ├── DemoClientRequest3.java
+#     │   │                   │   ├── DemoClientRequest4.java
+#     │   │                   │   ├── DemoEmptyResponse.java
+#     │   │                   │   ├── DemoInvalidRequest.java
+#     │   │                   │   ├── DemoPoorRequest.java
+#     │   │                   │   ├── DemoServerResponse1.java
+#     │   │                   │   ├── DemoServerResponse2.java
+#     │   │                   │   ├── DemoServerResponse3.java
+#     │   │                   │   ├── package-info.java
+#     │   │                   │   └── PercsServer.java
+#     │   │                   └── lib
+#     │   │                       ├── package-info.java
+#     │   │                       ├── Percs.java
+#     │   │                       ├── Protocol.java
+#     │   │                       ├── Request.java
+#     │   │                       ├── Response.java
+#     │   │                       └── Server.java
+#     │   └── resources
+#     │       ├── application.conf
+#     │       └── log4j.xml
+#     └── test
+#         ├── java
+#         └── resources
+# #+end_example
 
-** Source Directory Files
+# ** Source Directory Files
+* Sources
 - clientServer.PercsClient.class :: Integration testing resources
 - PercsServer.java :: Example main function
 - Demo*.java :: Example implementations of requests and responses
@@ -132,9 +142,9 @@ or visit [[https://cezs.github.io/studies-percs/][the project's page]].
 - application.conf :: Akka configuration
 - log4j.xml :: Log4j logger configuration
 - Percs.java :: Private classes
-# - doc/ :: Javadoc documentation
-# - README.md :: Current file
-# - pom.xml :: Maven configuration
+- doc/ :: Javadoc documentation
+- README.md :: Current file
+- pom.xml :: Maven configuration
  
 * License
 

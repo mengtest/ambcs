@@ -7,7 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 
 /**
- * Class storing protocol.
+ * Reflection class storing protocol.
+ *
  * Requirements: Penultimate message signalises end of communication,
  * while the last one signalises invalid request.
  */
@@ -30,6 +31,10 @@ public class Protocol {
 
     /**
      * Add a request/response pair.
+     *
+     * Note: Penultimate message signalises end of communication,
+     * while the last one signalises invalid request.
+     *
      * @param clientRequest a class corresponding to client's request
      * @param serverResponse an instance of listener's response class
      */

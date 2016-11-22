@@ -36,7 +36,7 @@ public class DemoInvalidRequest extends Request<XMLStreamReader> {
      *
      * @return request string
      */
-    public String getXMLResponse() {
+    public String getXML() {
         return "<<poor-request/>/>";
     }
 

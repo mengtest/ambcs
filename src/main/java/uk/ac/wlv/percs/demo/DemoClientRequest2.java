@@ -80,7 +80,7 @@ public class DemoClientRequest2 extends Request<XMLStreamReader> {
      *
      * @return request string
      */
-    public final String getXMLResponse() {
+    public final String getXML() {
         return "<response id=\"" + id + "\">" + "<tk>" + tk + "</tk></response>";
     }
 

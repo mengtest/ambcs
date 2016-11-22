@@ -49,7 +49,7 @@ public class DemoClientRequest4 extends Request<XMLStreamReader> {
      *
      * @return request string
      */
-    public String getXMLResponse() {
+    public String getXML() {
         return "<response cmd=\\\"" + cmd + "\\\"></response>";
     }
 

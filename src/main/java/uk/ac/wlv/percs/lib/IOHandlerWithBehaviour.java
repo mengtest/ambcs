@@ -19,14 +19,15 @@ import java.net.SocketAddress;
 /**
  * This stream handler, should be fairly versatile, in terms of what kind of user
  * input it can process. It can handle multiline requests, requests with
- * multiple roots etc. However, usually XML requests should be well-formed and conform
- * to the XML syntax rules, it will return runtime errors if given incompatible
- * input such as {@code <<request/>>} or {@code <mess age/>}. See {@link
- * XMLStreamReader} for more information on different kind of it's exceptions.
+ * multiple roots etc. However, it is recommended that XML requests are well-formed
+ * and conform to the XML syntax rules, it will return runtime errors if given
+ * incompatible input such as {@code <<request/>>} or {@code <mess age/>}.
+ * See {@link XMLStreamReader} for more information on different kind
+ * of custom exceptions.
  */
-class StreamHandlerWithBehaviour extends UntypedActor {
+class IOHandlerWithBehaviour extends UntypedActor {
 
-    private final Logger log = LoggerFactory.getLogger(StreamHandlerWithBehaviour.class);
+    private final Logger log = LoggerFactory.getLogger(IOHandlerWithBehaviour.class);
 
     private final ActorRef connection; // provides socket
     private final ValidatorI<?> validatorI;
@@ -50,7 +51,7 @@ class StreamHandlerWithBehaviour extends UntypedActor {
      * Input from stream is processed on character by character basis.
      */
     private final Procedure<Object> reading = new Procedure<Object>() {
-        public void apply(Object message) throws StreamReadingProblem, StreamClosingProblem {
+        public void apply(Object message) throws IOReadingProblem, IOClosingProblem {
             if (message instanceof CommunicationEndpoint) {
                 try {
                     final CommunicationEndpoint endpoint = (CommunicationEndpoint) message;
@@ -74,7 +75,7 @@ class StreamHandlerWithBehaviour extends UntypedActor {
                         character = reader.read();
                     }
                 } catch (IOException e) {
-                    throw new StreamReadingProblem();
+                    throw new IOReadingProblem();
                 } finally {
                     close();
                 }
@@ -85,12 +86,12 @@ class StreamHandlerWithBehaviour extends UntypedActor {
     };
 
     /**
-     * StreamHandler's constructor
+     * IOHandler's constructor
      *
      * @param connection cf. {@link ActorRef}
      * @param validatorI a class implementing {@link ValidatorI} interface
      */
-    StreamHandlerWithBehaviour(ActorRef connection, ValidatorI<?> validatorI) {
+    IOHandlerWithBehaviour(ActorRef connection, ValidatorI<?> validatorI) {
         this.connection = connection;
         this.validatorI = validatorI;
 
@@ -120,14 +121,14 @@ class StreamHandlerWithBehaviour extends UntypedActor {
     /**
      * close(): helper clean up method
      *
-     * @throws StreamClosingProblem cf. {@link StreamClosingProblem}
+     * @throws IOClosingProblem cf. {@link IOClosingProblem}
      */
-    private void close() throws StreamClosingProblem {
+    private void close() throws IOClosingProblem {
         try {
             if (reader != null) reader.close();
         } catch (IOException e) {
             log.error(e.getMessage(), e);
-            throw new StreamClosingProblem();
+            throw new IOClosingProblem();
         }
 
     }
@@ -160,4 +161,4 @@ class StreamHandlerWithBehaviour extends UntypedActor {
     static class ConnectionClosed {
     }
 
-} // end of StreamHandlerWithBehaviour{}
+} // end of IOHandlerWithBehaviour{}

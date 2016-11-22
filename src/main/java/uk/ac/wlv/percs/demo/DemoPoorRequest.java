@@ -17,7 +17,7 @@ public class DemoPoorRequest implements Response {
      * @param message a class implementing {@link Request}
      * @return XML in the form of String
      */
-    public String getXMLResponse(Request message) {
+    public String getXML(Request message) {
         return "<<poor-request/>/>";
     }
 

@@ -17,7 +17,7 @@ public class DemoServerResponse1 implements Response {
      * @param message a class implementing {@link Request}
      * @return XML in the form of String
      */
-    public final String getXMLResponse(Request message) {
+    public final String getXML(Request message) {
         return "<inform id=\\\"1427790\\\"><pk>CSS3P</pk></inform>";
     }
 

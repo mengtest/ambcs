@@ -59,6 +59,7 @@ public class DemoClientRequest3 extends Request<XMLStreamReader> {
             }
 
             xw.close();
+
             JSONObject jsondata = XML.toJSONObject(sw.toString());
 
             FileWriter fw = null;
@@ -98,7 +99,7 @@ public class DemoClientRequest3 extends Request<XMLStreamReader> {
      *
      * @return request string
      */
-    public String getXMLResponse() {
+    public String getXML() {
         return "<?xml version=\"1.0\" ?> <MESSAGE CONTENT>";
     }
 
