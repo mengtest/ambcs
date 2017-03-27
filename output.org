@@ -1,0 +1,65 @@
+* Example Session 
+
+#+begin_example
+❯ java clientServer.PercsClient
+Client <Cannock Chase>: connected to localhost:11896
+-------------------------------------
+Client - rx:  <inform id=\"1427790\"><pk>CSS3P</pk></inform>
+Client - rx:  <request cmd=\"GRAB\"><tk>Oj4444</tk></request>
+Client - rx:  <confirm cmd=\"goodbye\"></confirm>
+Client: connection closed
+#+end_example
+
+* Parsed Data
+
+#+begin_src JSON
+{"constituency": {
+    "name": "Cannock Chase",
+    "suitor": [
+        {
+            "name": "D. Sciotus",
+            "tally": 9035,
+            "party": "Conservative"
+        },
+        {
+            "name": "M. Ciatha",
+            "tally": 17435,
+            "party": "Labour"
+        },
+        {
+            "name": "G. Hairth",
+            "tally": 458,
+            "party": "Liberal Democrats"
+        },
+        {
+            "name": "O. Baralan",
+            "tally": 5433,
+            "party": "UKIP"
+        },
+        {
+            "name": "P. Blaide",
+            "tally": 674,
+            "party": "Greens"
+        }
+    ]
+}}
+#+end_src
+
+* Log File
+
+#+begin_example
+Date: Mon Feb 13 05:47:28 GMT 2017
+Port: 11896
+Rx: <xin-cha-o/>
+Tx: <inform id=\"1427790\"><pk>CSS3P</pk></inform>
+
+Date: Mon Feb 13 05:47:28 GMT 2017
+Port: 11896
+Rx: <response id="Percs4C3-5"><tk>Oj4444</tk></response>
+Tx: <request cmd=\"GRAB\"><tk>Oj4444</tk></request>
+
+Date: Mon Feb 13 05:47:28 GMT 2017
+Port: 11896
+Rx: <?xml version="1.0" ?> <MESSAGE CONTENT>
+Tx: <confirm cmd=\"goodbye\"></confirm>
+#+end_example

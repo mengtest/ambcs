@@ -1,0 +1,120 @@
+#+TITLE:	AMBCS
+#+AUTHOR:	Cezary Stankiewicz
+#+EMAIL:	c.stankiewicz@wlv.ac.uk
+
+[[https://travis-ci.org/cezs/studies-percs][https://travis-ci.org/cezs/studies-ambcs.svg?branch=master]]
+[[file:LICENSE][http://img.shields.io/badge/License-Apache%202.0-blue.svg]]
+
+Actor model based implementation of server supporting non-uniform protocols.
+
+* Dependencies
+
+- [[https://github.com/akka/akka][Lightbend Akka]] :: Library for handling concurrency as well as hierarchical error propagation and maintenance. 
+- [[https://github.com/apache/log4j][Apache Log4j]] :: Library for managing asynchronous logging during non-deterministic execution of the program.
+
+* Example
+
+Import packages.
+#+begin_src java
+import com.github.cezs.ambcs.demo;
+import com.github.cezs.ambcs.lib.*;
+#+end_src
+
+Create new class
+#+begin_src java
+/**
+ * Main class.
+ */
+public class AmbcsServer {
+#+end_src
+
+
+Use the custom request/response pairs.
+#+begin_src java
+    private static Protocol protocol = new Protocol();;
+    static {
+        protocol.put(DemoClientRequest1.class, new DemoServerResponse1());
+        protocol.put(DemoClientRequest2.class, new DemoServerResponse2());
+        protocol.put(DemoClientRequest3.class, new DemoServerResponse3());
+        protocol.put(DemoClientRequest4.class, new DemoEmptyResponse());
+        protocol.put(DemoInvalidRequest.class, new DemoPoorRequest());
+    }
+#+end_src
+
+Add an entry point for the application.
+#+begin_src java
+    /**
+     * The entry point.
+     * @param args a port.
+     */
+    public static void main(String[] args) {
+
+        /* port number */
+        int port = 11896;
+        
+        /* name */
+        String name = "AmbcsServer";
+
+        /* logging file */
+        String log = "ambcs.log";
+        
+        /* Create server instance */
+        final Server server = Server.create (
+                port, 
+                name,
+                log, 
+                protocol,
+                ConverterType.Stream
+        );
+
+    } // end of main()
+#+end_src
+
+Finish creation.
+#+begin_src java
+} // end of AmbcsServer{}
+#+end_src
+
+* Build & Install
+
+The project uses maven for build automation. In order to build the supplied demo, run the following command.
+
+#+begin_example
+mvn clean compile package
+#+end_Run
+
+* Demo
+
+#+begin_example
+java -jar ./target/ambcs-cezs-github-com-server.jar
+#+end_example
+
+* Documentation
+
+Use the following commands to generate javadoc documentation from the comments and annotations provided in the sources,
+
+#+begin_example
+mvn javadoc:javadoc &
+#+end_example
+
+or visit [[https://cezs.github.io/studies-ambcs/][the project's page]].
+
+* Configurations and Sources
+- clientServer.AmbcsClient.class :: Integration testing resources
+- AmbcsServer.java :: Example main function
+- Demo*.java :: Example implementations of requests and responses
+- Protocol.java :: Protocol structure, to be instantiated.
+- Request.java :: Client's request, to be implemented.
+- Response.java :: Server's response, to be implemented.
+- Server.java :: Server, to be instantiated.
+- application.conf :: Akka configuration
+- log4j.xml :: Log4j logger configuration
+- Ambcs.java :: Private classes
+- doc/ :: Javadoc documentation
+- README.org :: Current file
+- pom.xml :: Maven configuration
+ 
+* License
+
+AMBCS is released under the Apache license. See the [[file:LICENSE][LICENSE]] file for details.
+
