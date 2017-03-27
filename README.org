@@ -1,0 +1,152 @@
+#+TITLE:	PERCS
+#+AUTHOR:	Cezary Stankiewicz
+#+EMAIL:	c.stankiewicz@wlv.ac.uk
+
+[[https://travis-ci.org/cezs/studies-percs][https://travis-ci.org/cezs/studies-percs.svg?branch=master]]
+[[file:LICENSE][http://img.shields.io/badge/License-Apache%202.0-blue.svg]]
+
+Actor model based implementation of server supporting non-uniform protocols.
+
+* Dependencies
+
+# This project uses:
+
+- [[https://github.com/akka/akka][Lightbend Akka]] :: library for handling concurrency as well as hierarchical error propagation and maintenance. 
+- [[https://github.com/apache/log4j][Apache Log4j]] :: manage asynchronous logging during non-deterministic execution of the program.
+
+* Example
+
+Import packages.
+#+begin_src java
+import uk.ac.wlv.percs.demo;
+import uk.ac.wlv.percs.lib.*;
+#+end_src
+
+Create new class
+#+begin_src java
+/**
+ * Main class.
+ */
+public class PercsServer {
+#+end_src
+
+
+Use the custom request/response pairs.
+#+begin_src java
+    private static Protocol protocol = new Protocol();;
+    static {
+        protocol.put(DemoClientRequest1.class, new DemoServerResponse1());
+        protocol.put(DemoClientRequest2.class, new DemoServerResponse2());
+        protocol.put(DemoClientRequest3.class, new DemoServerResponse3());
+        protocol.put(DemoClientRequest4.class, new DemoEmptyResponse());
+        protocol.put(DemoInvalidRequest.class, new DemoPoorRequest());
+    }
+#+end_src
+
+Add an entry point for the application.
+#+begin_src java
+    public static void main(String[] args) {
+
+        /* Default port */
+        int port = 11896;
+
+        /* Create server instance on port, with name, and protocol instance */
+        final Server server = Server.create (
+                port,
+                "PercsServer",
+                "Percs.log",
+                protocol,
+                ConverterType.Stream
+        );
+
+    } // end of main()
+#+end_src
+
+Finish creation.
+#+begin_src java
+} // end of PercsServer{}
+#+end_src
+
+* Build & Install
+
+The project uses maven for build automation. In order to run the supplied demo, run the following.
+
+#+begin_example
+mvn clean compile package
+#+end_example
+
+* Documentation
+
+Use the following commands to generate javadoc documentation from the comments and annotations provided in the sources,
+
+#+begin_example
+mvn javadoc:javadoc &
+#+end_example
+
+or visit [[https://cezs.github.io/studies-percs/][the project's page]].
+
+# * Directories
+
+# ** Source
+
+# #+begin_example
+# └── src
+#     ├── it
+#     │   └── clientServer
+#     │       ├── a.class
+#     │       ├── b.class
+#     │       └── PercsClient.class
+#     ├── main
+#     │   ├── java
+#     │   │   └── uk
+#     │   │       └── ac
+#     │   │           └── wlv
+#     │   │               └── percs
+#     │   │                   ├── demo
+#     │   │                   │   ├── DemoClientRequest1.java
+#     │   │                   │   ├── DemoClientRequest2.java
+#     │   │                   │   ├── DemoClientRequest3.java
+#     │   │                   │   ├── DemoClientRequest4.java
+#     │   │                   │   ├── DemoEmptyResponse.java
+#     │   │                   │   ├── DemoInvalidRequest.java
+#     │   │                   │   ├── DemoPoorRequest.java
+#     │   │                   │   ├── DemoServerResponse1.java
+#     │   │                   │   ├── DemoServerResponse2.java
+#     │   │                   │   ├── DemoServerResponse3.java
+#     │   │                   │   ├── package-info.java
+#     │   │                   │   └── PercsServer.java
+#     │   │                   └── lib
+#     │   │                       ├── package-info.java
+#     │   │                       ├── Percs.java
+#     │   │                       ├── Protocol.java
+#     │   │                       ├── Request.java
+#     │   │                       ├── Response.java
+#     │   │                       └── Server.java
+#     │   └── resources
+#     │       ├── application.conf
+#     │       └── log4j.xml
+#     └── test
+#         ├── java
+#         └── resources
+# #+end_example
+
+# ** Source Directory Files
+* Sources
+- clientServer.PercsClient.class :: Integration testing resources
+- PercsServer.java :: Example main function
+- Demo*.java :: Example implementations of requests and responses
+- Protocol.java :: Protocol structure, to be instantiated.
+- Request.java :: Client's request, to be implemented.
+- Response.java :: Server's response, to be implemented.
+- Server.java :: Server, to be instantiated.
+- application.conf :: Akka configuration
+- log4j.xml :: Log4j logger configuration
+- Percs.java :: Private classes
+- doc/ :: Javadoc documentation
+- README.md :: Current file
+- pom.xml :: Maven configuration
+ 
+* License
+
+PERCS is released under the Apache license. See the [[file:LICENSE][LICENSE]] file for details.
+
