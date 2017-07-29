@@ -2,8 +2,8 @@
 #+AUTHOR:	Cezary Stankiewicz
 #+EMAIL:	c.stankiewicz@wlv.ac.uk
 
-[[https://travis-ci.org/cezs/studies-percs][https://travis-ci.org/cezs/ambcs.svg?branch=master
-http://img.shields.io/badge/License-Apache%202.0-blue.svg]]
+[[https://travis-ci.org/cezs/ambcs.svg?branch=master]]
+[[file:LICENSE][[[http://img.shields.io/badge/License-Apache%202.0-blue.svg]]
 
 Actor model (see Akka) based implementation of server supporting XML protocols and JSON data transfers.
 
