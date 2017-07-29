@@ -58,18 +58,14 @@
 
     <plugins>
 
-      <!--"Akka's configuration approach relies heavily on the notion of every
-          module/jar having its own reference.conf file, all of these will be discovered
-          by the configuration and loaded. Unfortunately this also means that if you
-          put/merge multiple jars into the same jar, you need to merge all the reference.confs
-          as well. Otherwise all defaults will be lost and Akka will not function." -->
-
       <plugin>
+
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <version>2.4.3</version>
 
         <executions>
+
           <execution>
             <id>ambcs-server</id>
             <phase>package</phase>
@@ -121,17 +117,21 @@
           </execution>
 
         </executions>
+        
       </plugin>
 
       <plugin>
+
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.8</version>
+
         <configuration>
           <show>public</show>
           <reportOutputDirectory>${project.basedir}</reportOutputDirectory>
           <destDir>docs</destDir>
         </configuration>
+
         <!-- <executions> -->
         <!--   <execution> -->
         <!--     <id>attach-javadocs</id> -->
@@ -141,6 +141,7 @@
         <!--     </goals> -->
         <!--   </execution> -->
         <!-- </executions> -->
+
       </plugin>
 
     </plugins>
