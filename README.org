@@ -5,7 +5,7 @@
 [[https://travis-ci.org/cezs/studies-percs][https://travis-ci.org/cezs/studies-ambcs.svg?branch=master]]
 [[file:LICENSE][http://img.shields.io/badge/License-Apache%202.0-blue.svg]]
 
-Actor model based implementation of server supporting non-uniform protocols.
+Actor model (see Akka) based implementation of server supporting XML protocols and JSON data transfers.
 
 * Dependencies
 
@@ -68,10 +68,7 @@ Add an entry point for the application.
         );
 
     } // end of main()
-#+end_src
 
-Finish creation.
-#+begin_src java
 } // end of AmbcsServer{}
 #+end_src
 
@@ -81,9 +78,11 @@ The project uses maven for build automation. In order to build the supplied demo
 
 #+begin_example
 mvn clean compile package
-#+end_Run
+#+end_example
 
 * Demo
+
+In order to run a sample server, execute following command.
 
 #+begin_example
 java -jar ./target/ambcs-cezs-github-com-server.jar
@@ -100,6 +99,7 @@ mvn javadoc:javadoc &
 or visit [[https://cezs.github.io/studies-ambcs/][the project's page]].
 
 * Configurations and Sources
+
 - clientServer.AmbcsClient.class :: Integration testing resources
 - AmbcsServer.java :: Example main function
 - Demo*.java :: Example implementations of requests and responses
