@@ -74,7 +74,7 @@ Add an entry point for the application.
 
 * Build & Install
 
-The project uses maven for build automation. In order to build the supplied demo, run the following command.
+The project uses Maven for build automation. In order to build the supplied demo, run the following command.
 
 #+begin_example
 mvn clean compile package
@@ -90,7 +90,7 @@ java -jar ./target/ambcs-cezs-github-com-server.jar
 
 * Documentation
 
-Use the following commands to generate javadoc documentation from the comments and annotations provided in the sources,
+Use the following commands to generate Javadoc documentation from the comments and annotations provided in the sources,
 
 #+begin_example
 mvn javadoc:javadoc &
